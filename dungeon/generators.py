@@ -9,11 +9,12 @@ def generate_room(x: int, y: int) -> Room:
 
 
 def _get_room_placement_permission(room_table: list[list], x: int, y: int) -> tuple[bool, bool]:
+    """Return tuple indicating if (we can place a room, we HAVE TO place a room)"""
     up: int | None = room_table[y - 1][x] if y != 0 else None
     left: int | None = room_table[y][x - 1] if x != 0 else None
     cross_right: int | None = room_table[y + 1][x + 1] if (y != 0 and x != len(room_table[0])) else None
 
-    return True, True
+    return (left is not None or up is not None), (up is not None and cross_right is None)
 
 
 def generate_dungeon(max_size_x: int, max_size_y: int) -> list[Room]:

@@ -1,6 +1,8 @@
 import random
 
+
 class Enemy:
+    """Simple enemy class"""
     min_atk = 200
     max_atk = 300
 

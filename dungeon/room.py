@@ -1,14 +1,17 @@
+from enum import Enum, auto
+
+
+class Direction(Enum):
+    north = auto()
+    south = auto()
+    east = auto()
+    west = auto()
+
+
 class Room:
     # all rooms will be of a square shape, limiting their entrances/exits to 4
     # and a maximum of 4 doors on each side
     # each door needs to contain georgraphical direction as key and id of the room they lead to as value
-
-    room_door_information = {
-        "north" : "",
-        "south" : "",
-        "east" : "",
-        "west" : ""
-    }
 
     # TODO: Dynamically set this value. Maybe during generation from file/db?
     room_description = '''
@@ -17,9 +20,9 @@ class Room:
 
     # These lists will contain instances of enemies and treasures
     # enemies will need to be defeated first in order to obtain treasures
-    def __init__(self, x: int, y: int, room_door_information = None):
+    def __init__(self, x: int, y: int):
         self.position: tuple[int, int] = (x, y)
-        self.room_door_information = room_door_information
+        self.room_door_information: dict[Direction, Room] = dict()
         self.room_enemies_inside: list = []
         self.room_treasures_inside: list = []
 

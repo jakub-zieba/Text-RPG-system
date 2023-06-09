@@ -26,7 +26,7 @@ class Room:
         self.room_enemies_inside: list = []
         self.room_treasures_inside: list = []
 
-    def __str__(self):
+    def __repr__(self):
         return f"Room<{self.position}>"
 
     # @property

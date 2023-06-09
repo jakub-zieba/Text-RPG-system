@@ -2,10 +2,10 @@ from enum import Enum, auto
 
 
 class Direction(Enum):
-    north = auto()
-    south = auto()
-    east = auto()
-    west = auto()
+    NORTH = auto()
+    SOUTH = auto()
+    EAST = auto()
+    WEST = auto()
 
 
 class Room:
@@ -22,12 +22,15 @@ class Room:
     # enemies will need to be defeated first in order to obtain treasures
     def __init__(self, x: int, y: int):
         self.position: tuple[int, int] = (x, y)
-        self.room_door_information: dict[Direction, Room] = dict()
+        self.door_information: dict[Direction, Room] = dict()
         self.room_enemies_inside: list = []
         self.room_treasures_inside: list = []
 
     def __repr__(self):
         return f"Room<{self.position}>"
+
+    def set_neighbour_room(self, direction: Direction, room: "Room") -> None:
+        self.door_information[direction] = room
 
     # @property
     # def room_treasures(self):

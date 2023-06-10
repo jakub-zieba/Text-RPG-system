@@ -1,6 +1,8 @@
 import random
 from collections import defaultdict
 
+from dungeon.item import BaseItem
+
 
 class Player:
     """Class representing a player """
@@ -15,9 +17,9 @@ class Player:
         # those can be modified by equipment changes
         self.min_damage = self.min_base_damage
         self.max_damage = self.max_base_damage
-        self.backpack = defaultdict(lambda: 0)
-
-        #statistics system is to be used later
+        self.backpack: dict[BaseItem, int] = defaultdict(lambda: 0)
+        self.items_equipped: list[BaseItem] = []
+        # statistics system is to be used later
         self.statistics = {
             "strength": 5,
             "agility": 5,
@@ -26,10 +28,10 @@ class Player:
             "vitality": 5
         }
 
-    def grab_item(self, item) -> None:
+    def grab_item(self, item: BaseItem) -> None:
         self.backpack[item] += 1
 
-    def drop_item(self, item):
+    def drop_item(self, item: BaseItem) -> BaseItem | None:
         if self.backpack[item] == 1:
             self.backpack.pop(item)
             return item
@@ -41,12 +43,25 @@ class Player:
             print("No such thing in your backpack.")
             return None
 
-    def get_equipment(self) -> dict:
+    def get_backpack_content(self) -> dict:
         return dict(self.backpack)
 
-    def equipItem(self, item_name):
-        if item_name in self.backpack:
+    def equip_item(self, item: BaseItem) -> None:
+        if not item.is_equipable:
+            print("You can't equip this item")
+            pass
+        if item not in self.backpack.keys():
+            print("No such item in your backpack, therefore you can't equip it")
+            pass
+        if self.backpack[item] > 1:
+            self.backpack[item] -= 1
+        else:
+            self.backpack.pop(item)
+        self.items_equipped.append(item)
+        item.change_stats(self)
 
+    def get_equipment(self):
+        return self.items_equipped
 
-    def attack(self):
+    def attack(self) -> int:
         return random.randint(self.min_damage, self.max_damage)

@@ -1,34 +1,30 @@
-from dungeon.dialogues import Dialogue
+from dataclasses import dataclass
+from typing import List
+
+import yaml
+
+from pathlib import Path
+
+from tonalite import from_dict
 
 
+@dataclass
 class Node:
-
-    def __init__(self, _id: str, dialogue_name: str):
-        self._id = _id
-        self.dialogue_name = dialogue_name
-        self.parent: Node | None = None
-        self.children: list[Node | None] = []
-
-    def set_next(self, node: "Node") -> "Node":
-        self.children.append(node)
-        node.parent = self
-        return self
+    short: str | None
+    long: str
+    # Can not use generic here
+    # see: https://docs.python.org/3/library/typing.html#typing.ForwardRef
+    children: List["Node"]
 
     def exec(self):
-        Dialogue.load_dialogue_file(self.dialogue_name)
-        for line in Dialogue():
-            print(line)
-
-    def __repr__(self):
-        return f"Node<{self._id}>"
+        print(self.long)
 
 
 class DecisionTree:
 
-    def __init__(self, node: Node, bidirectional: bool = False):
+    def __init__(self, node: Node):
         self.entry_point = node
         self.current_position = node
-        self.bidirectional = bidirectional
 
     def next_node(self, node_number: int):
         try:
@@ -40,11 +36,14 @@ class DecisionTree:
         self.current_position.exec()
 
 
+def generate_dialogue_tree(dialogue_name: str) -> DecisionTree | None:
+    dialogue_path = Path(__file__).parent / f"dialogues/{dialogue_name}.yaml"
+    if not dialogue_path.exists():
+        print(f"Provided dialogue: {dialogue_name} does not exists!")
+        return None
 
-# node = Node("Root", "main")\
-#     .set_next(Node("#1 from root", "left_branch"))\
-#     .set_next(Node("#2 from root", "right_branch")
-#               .set_next(Node("#1 from child", "left_right_branch"))
-#               .set_next(Node("#2 from child", "right_right_branch")))
-#
-# tree = DecisionTree(node)
+    with open(dialogue_path) as file:
+        result = yaml.safe_load(file)
+
+    parsed_node = from_dict(data_class=Node, data=result)
+    return DecisionTree(parsed_node)

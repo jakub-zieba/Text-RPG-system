@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dungeon"
+version = "0.1.0"
+description = ""
+authors = ["Jakub Zięba <sleepe7@gmail.com>", "Loreq12 <ceziu1997@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+PyYAML = "^6.0"
+tonalite = "^1.7.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

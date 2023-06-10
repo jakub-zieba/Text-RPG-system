@@ -1,0 +1,23 @@
+short:
+long: Czego potrzebujesz spragniony wędrowcze?
+children:
+  - short: Co tam masz?
+    long: >
+      To tylko moje precjoza.
+      Kiedyś może Ci opowiem o nich więcej.
+    children: []
+  - short: Opowiedz mi o zleceniu
+    long: >
+      Zlecenie wisi już od dłuższego czasu.
+      Niestety nikt do tej pory mu nie podołał.
+      Co konkretnie potrzebujesz wiedzieć?
+    children:
+      - short: Opowiedz mi o tej bestii
+        long: >
+          Bestia zalęgła się dawno temu.
+          Będzie ok rok z okładem. Do tej pory zabiła 15 ludzi.
+        children: []
+      - short: Potargujmy się
+        long: >
+          Cena jest nie negocjowalna mutancie.
+        children: []

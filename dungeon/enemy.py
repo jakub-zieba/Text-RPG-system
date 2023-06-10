@@ -11,5 +11,5 @@ class Enemy:
 
     # add some methods like combat handling and loot drop maby
  
-    def attack(self):
-        return(random.randint(self.min_atk, self.max_atk))
+    def attack(self) -> int:
+        return random.randint(self.min_atk, self.max_atk)

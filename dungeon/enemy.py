@@ -3,16 +3,11 @@ import random
 
 class Enemy:
     """Simple enemy class"""
-    min_atk = 200
-    max_atk = 300
 
-    def __init__(self, min_atk, max_atk, description, *args):
+    def __init__(self, min_atk: int = 200, max_atk: int = 300, description: str = ""):
         self.min_atk = min_atk
         self.max_atk = max_atk
         self.description = description
-
-        # this dict should be then transformed into some descriptive field (maby?)
-        self.__dict__.update(args)
 
     # add some methods like combat handling and loot drop maby
  

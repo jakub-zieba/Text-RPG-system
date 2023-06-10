@@ -4,6 +4,7 @@ from collections import defaultdict
 
 class Player:
     """Class representing a player """
+
     def __init__(self):
         # base parameters for player, stamina and mana are not used atm
         self.health: int = 2000
@@ -15,6 +16,15 @@ class Player:
         self.min_damage = self.min_base_damage
         self.max_damage = self.max_base_damage
         self.backpack = defaultdict(lambda: 0)
+
+        #statistics system is to be used later
+        self.statistics = {
+            "strength": 5,
+            "agility": 5,
+            "wisdom": 5,
+            "luck": 5,
+            "vitality": 5
+        }
 
     def grab_item(self, item) -> None:
         self.backpack[item] += 1
@@ -30,6 +40,13 @@ class Player:
         else:
             print("No such thing in your backpack.")
             return None
+
+    def get_equipment(self) -> dict:
+        return dict(self.backpack)
+
+    def equipItem(self, item_name):
+        if item_name in self.backpack:
+
 
     def attack(self):
         return random.randint(self.min_damage, self.max_damage)

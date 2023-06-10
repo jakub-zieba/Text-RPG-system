@@ -1,4 +1,5 @@
 import random
+from collections import defaultdict
 
 
 class Player:
@@ -13,14 +14,15 @@ class Player:
         # those can be modified by equipment changes
         self.min_damage = self.min_base_damage
         self.max_damage = self.max_base_damage
-        self.backpack = dict()
-    def grab_item(self, item):
-        if item in self.backpack:
-            self.backpack[item] += 1
-        else:
-            self.backpack[item] = 1
+        self.backpack = defaultdict(lambda: 0)
+
+    def grab_item(self, item) -> None:
+        self.backpack[item] += 1
 
     def drop_item(self, item):
+        if self.backpack[item] == 1:
+            self.backpack.pop(item)
+            return item
         if self.backpack[item] >= 1:
             self.backpack[item] -= 1
             print("You dropped:", item.name, "amount left:", self.backpack[item])

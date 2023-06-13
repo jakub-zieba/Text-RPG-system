@@ -24,11 +24,13 @@ class Enemy:
 
 
 class Skeleton(Enemy):
-    def __init__(self, min_atk: int = 20, max_atk: int = 30,
-                 description: str = "Lvl 1. skeleton warrior equipped with rusty sword"):
-        self.min_atk = min_atk
-        self.max_atk = max_atk
-        self.description = description
+    def __init__(
+        self,
+        min_atk: int = 20,
+        max_atk: int = 30,
+        description: str = "Lvl 1. skeleton warrior equipped with rusty sword"
+    ):
+        super().__init__(min_atk, max_atk, description)
 
-        def attack(self) -> int:
-            return random.randint(min_atk, max_atk)
+    def attack(self) -> int:
+        return random.randint(self.min_atk, self.max_atk)

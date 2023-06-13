@@ -4,6 +4,7 @@ from dungeon.room import Room, Direction
 from dungeon.enemy import Skeleton
 from dungeon.item import ConsumableHealthPotion
 
+
 def _generate_room(x: int, y: int) -> Room:
     """Creates a single room instance"""
     enemies = []

@@ -35,6 +35,29 @@ class DecisionTree:
     def exec(self):
         self.current_position.exec()
 
+        while True:
+            if not self.current_position.children:
+                print("Dialogue came to an end")
+                break
+            if len(self.current_position.children) == 1:
+                # Require user to go to next part of dialogue
+                input()
+                # Only one option available so use it in next iteration
+                self.next_node(0)
+                self.current_position.exec()
+                continue
+
+            for idx, child in enumerate(self.current_position.children):
+                print(f"{idx}: {child.short}")
+
+            option = input("Which option to choose: ")
+            if not option.isdigit():
+                print("Bzidka opcja")
+                continue
+
+            self.next_node(int(option))
+            self.current_position.exec()
+
 
 def generate_dialogue_tree(dialogue_name: str) -> DecisionTree | None:
     dialogue_path = Path(__file__).parent / f"dialogues/{dialogue_name}.yaml"
@@ -45,5 +68,5 @@ def generate_dialogue_tree(dialogue_name: str) -> DecisionTree | None:
     with open(dialogue_path) as file:
         result = yaml.safe_load(file)
 
-    parsed_node = from_dict(data_class=Node, data=result)
-    return DecisionTree(parsed_node)
+    parsed_nodes: Node = from_dict(data_class=Node, data=result)
+    return DecisionTree(parsed_nodes)

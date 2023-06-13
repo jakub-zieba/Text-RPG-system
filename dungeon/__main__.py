@@ -11,21 +11,6 @@ if __name__ == "__main__":
     # for i in Dialogue():
     #     print(i)
 
-    tree = generate_dialogue_tree("test_d")
+    tree = generate_dialogue_tree("test_continues_dialogue")
 
     tree.exec()
-
-    while True:
-        if not tree.current_position.children:
-            print("Dialogue came to an end")
-            break
-        for idx, child in enumerate(tree.current_position.children):
-            print(f"{idx}: {child.short}")
-
-        option = input("Which option to choose: ")
-        if not option.isdigit():
-            print("Bzidka opcja")
-            continue
-
-        tree.next_node(int(option))
-        tree.exec()

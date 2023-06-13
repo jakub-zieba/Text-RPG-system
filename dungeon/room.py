@@ -20,11 +20,11 @@ class Room:
 
     # These lists will contain instances of enemies and treasures
     # enemies will need to be defeated first in order to obtain treasures
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int, y: int, room_enemies_inside: list = [], room_treasures_inside: list = []):
         self.position: tuple[int, int] = (x, y)
         self.door_information: dict[Direction, Room] = dict()
-        self.room_enemies_inside: list = []
-        self.room_treasures_inside: list = []
+        self.room_enemies_inside = room_enemies_inside
+        self.room_treasures_inside = room_treasures_inside
 
     def __repr__(self):
         return f"Room<{self.position}>"

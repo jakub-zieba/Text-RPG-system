@@ -37,7 +37,7 @@ class ConsumableHealthPotion(BaseItem):
         self.is_consumable = True
 
 
-class EquippableSword(BaseItem):
+class EquipableSword(BaseItem):
     def __init__(self):
         self.name = "Short straight sword"
         self.description = """You can beat goblins and humans with it, 

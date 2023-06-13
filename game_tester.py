@@ -1,5 +1,5 @@
 from dungeon.generators import generate_dungeon
-from dungeon.item import EquippableSword, ConsumableHealthPotion
+from dungeon.item import EquipableSword, ConsumableHealthPotion
 import player
 
 """
@@ -20,7 +20,7 @@ player = player.Player()
 
 potion = ConsumableHealthPotion()
 second_potion = ConsumableHealthPotion()
-small_sword = EquippableSword()
+small_sword = EquipableSword()
 
 player.grab_item(potion)
 player.grab_item(small_sword)

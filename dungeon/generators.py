@@ -1,11 +1,22 @@
 import random
 
 from dungeon.room import Room, Direction
-
+from dungeon.enemy import Skeleton
+from dungeon.item import ConsumableHealthPotion
 
 def _generate_room(x: int, y: int) -> Room:
     """Creates a single room instance"""
-    return Room(x, y)
+    enemies = []
+    loot = []
+    if random.choice([True, False]):
+        # x is used as a pseudo difficulty indicator
+        # if there are enemies loot automatically should also be there
+        # TODO: Make a propper difficulty indicator based on dungeon depth and assign propper enemy or enemy group size
+        for i in range(x):
+            enemies.append([Skeleton()])
+        loot.append(ConsumableHealthPotion())
+
+    return Room(x, y, enemies, loot)
 
 
 def _get_room_placement_permission(room_table: list[list], x: int, y: int) -> tuple[bool, bool]:

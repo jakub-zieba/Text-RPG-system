@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import ForwardRef
 
 import yaml
 
@@ -12,9 +12,9 @@ from tonalite import from_dict
 class Node:
     short: str | None
     long: str
-    # Can not use generic here
+    # Can not use plain generic here
     # see: https://docs.python.org/3/library/typing.html#typing.ForwardRef
-    children: List["Node"]
+    children: list[ForwardRef("Node")]
 
     def exec(self):
         print(self.long)

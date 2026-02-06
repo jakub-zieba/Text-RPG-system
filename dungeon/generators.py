@@ -67,7 +67,7 @@ def generate_dungeon(max_size_x: int, max_size_y: int) -> list[Room]:
     # Place first room on random first row
     rand_x = random.randint(0, max_size_x)
     first_room = _generate_room(rand_x, 0)
-    tmp_table[0][rand_x] = first_room
+    tmp_table[rand_x][0] = first_room
 
     for y in range(max_size_y):
         for x in range(max_size_x):

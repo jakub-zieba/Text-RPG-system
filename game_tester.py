@@ -1,4 +1,4 @@
-from dungeon.generators import generate_dungeon
+from dungeon.generators import generate_dungeon, visualize_dungeon
 from dungeon.item import EquipableSword, ConsumableHealthPotion
 import player
 
@@ -13,7 +13,7 @@ while not sd_size.isnumeric():
 max_dungeon_size: int = int(sd_size)
 
 dungeon_map = generate_dungeon(max_dungeon_size//2, max_dungeon_size)
-print("Map:", dungeon_map)
+print("Map:\n", visualize_dungeon(dungeon_map))
 
 
 player = player.Player()

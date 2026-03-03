@@ -34,6 +34,7 @@ def _get_room_placement_permission(room_table: list[list], x: int, y: int) -> tu
 
 
 def _connect_rooms(dungeon_table: list, max_size_x: int, max_size_y: int) -> None:
+    """Arrange doors between rooms based on their placement"""
     for y in range(max_size_y):
         for x in range(max_size_x):
             up = right = down = left = None
@@ -82,3 +83,53 @@ def generate_dungeon(max_size_x: int, max_size_y: int) -> list[Room]:
 
     _connect_rooms(tmp_table, max_size_x, max_size_y)
     return [room for room_list in tmp_table for room in room_list if room is not None]
+
+def visualize_dungeon(rooms: list[Room]) -> str:
+    """Returns an ASCII art representation of the dungeon layout.
+
+    Symbols:
+      [ ] - empty room      [e] - room with enemies
+      [l] - room with loot  [*] - enemies and loot
+      ---  horizontal door   |   vertical door
+    """
+    if not rooms:
+        return "(empty dungeon)"
+
+    max_x = max(r.position[0] for r in rooms) + 1
+    max_y = max(r.position[1] for r in rooms) + 1
+    grid = {r.position: r for r in rooms}
+
+    def _symbol(room: Room) -> str:
+        has_e = bool(room.room_enemies_inside)
+        has_l = bool(room.room_treasures_inside)
+        if has_e and has_l:
+            return "[*]"
+        if has_e:
+            return "[e]"
+        if has_l:
+            return "[l]"
+        return "[ ]"
+
+    lines = []
+    for y in range(max_y):
+        room_row = ""
+        connector_row = ""
+        for x in range(max_x):
+            room = grid.get((x, y))
+            room_row += _symbol(room) if room else "   "
+
+            if x < max_x - 1:
+                east = grid.get((x + 1, y))
+                room_row += "---" if room and east and Direction.EAST in room.door_information else "   "
+
+            if y < max_y - 1:
+                south = grid.get((x, y + 1))
+                connector_row += " | " if room and south and Direction.SOUTH in room.door_information else "   "
+                if x < max_x - 1:
+                    connector_row += "   "
+
+        lines.append(room_row)
+        if y < max_y - 1:
+            lines.append(connector_row)
+
+    return "\n".join(lines)

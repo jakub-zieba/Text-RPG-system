@@ -1,5 +1,6 @@
 from dungeon.generators import generate_dungeon, visualize_dungeon
 from dungeon.item import EquipableSword, ConsumableHealthPotion
+from dungeon.enemy import Skeleton
 import player
 
 """
@@ -30,3 +31,34 @@ print("Equipped stuff:", player.get_equipment())
 print("Backpack after equipping sword:", player.get_backpack_content())
 player.grab_item(second_potion)
 print("Backpack after getting second potion:", player.get_backpack_content())
+
+# --- Combat test ---
+print("\n=== Combat Test ===")
+skeleton = Skeleton()
+print(f"Player  HP: {player.current_health}/{player.max_health}  dmg: {player.min_damage}-{player.max_damage}  crit: {player.crit_chance}%  dodge: {player.dodge_chance}%")
+print(f"Skeleton HP: {skeleton.current_health}/{skeleton.max_health}  dmg: {skeleton.min_damage}-{skeleton.max_damage}  crit: {skeleton.crit_chance}%  dodge: {skeleton.dodge_chance}%")
+print()
+
+round_num = 1
+while player.is_alive() and skeleton.is_alive():
+    p_dmg = player.attack()
+    taken_by_skeleton = skeleton.take_damage(p_dmg)
+    if taken_by_skeleton == 0:
+        print(f"Round {round_num}: Player attacks for {p_dmg} — Skeleton dodged!")
+    else:
+        print(f"Round {round_num}: Player attacks for {taken_by_skeleton} — Skeleton HP: {skeleton.current_health}/{skeleton.max_health}")
+
+    if not skeleton.is_alive():
+        break
+
+    s_dmg = skeleton.attack()
+    taken_by_player = player.take_damage(s_dmg)
+    if taken_by_player == 0:
+        print(f"Round {round_num}: Skeleton attacks for {s_dmg} — Player dodged!")
+    else:
+        print(f"Round {round_num}: Skeleton attacks for {taken_by_player} — Player HP: {player.current_health}/{player.max_health}")
+
+    round_num += 1
+
+winner = "Player" if player.is_alive() else "Skeleton"
+print(f"\n{winner} wins after {round_num} round(s).")

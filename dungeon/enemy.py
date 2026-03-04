@@ -27,7 +27,7 @@ class Enemy(CombatEntity):
 class Skeleton(Enemy):
     _BASE_STATS = {
         "strength": 4,   # min_damage=20, max_damage=40
-        "vitality": 5,   # max_health=100
+        "vitality": 80,   # max_health=100
         "agility": 3,    # dodge_chance=1.5%
         "wisdom": 1,
         "luck": 2,       # crit_chance=1%

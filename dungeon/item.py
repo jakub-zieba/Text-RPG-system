@@ -40,13 +40,11 @@ class ConsumableHealthPotion(BaseItem):
 class EquipableSword(BaseItem):
     def __init__(self):
         self.name = "Short straight sword"
-        self.description = """You can beat goblins and humans with it, 
+        self.description = """You can beat goblins and humans with it,
             but against big monsters it just won't do. Great for lvl 1 crooks."""
-        self.min_attack_damage = 250
-        self.max_attack_damage = 300
+        self.strength_bonus = 30
         self.is_equipable = True
         self.is_consumable = False
 
-    def change_stats(self, player: "Player"):
-        player.min_damage = self.min_attack_damage
-        player.max_damage = self.max_attack_damage
+    def change_stats(self, entity: "CombatEntity"):
+        entity.stat_bonuses["strength"] += self.strength_bonus

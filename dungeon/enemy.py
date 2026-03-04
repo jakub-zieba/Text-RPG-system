@@ -1,14 +1,20 @@
-import random
 from abc import abstractmethod
 
+from combat_entity import CombatEntity
 
-class Enemy:
-    """Simple enemy class"""
+
+class Enemy(CombatEntity):
+    """Base class for all enemies.
+
+    Each subclass must define a _BASE_STATS class attribute and set self.name
+    in its __init__.
+    """
+
+    _BASE_STATS: dict[str, int] = {}
 
     @abstractmethod
-    def __init__(self, min_atk: int = 200, max_atk: int = 300, description: str = ""):
-        self.min_atk = min_atk
-        self.max_atk = max_atk
+    def __init__(self, description: str = "") -> None:
+        super().__init__(self._BASE_STATS)
         self.description = description
 
     def __hash__(self):
@@ -16,21 +22,17 @@ class Enemy:
 
     def __eq__(self, other):
         return self.name == other.name
-    # add some methods like combat handling and loot drop maby
-
-    @abstractmethod
-    def attack(self) -> int:
-        raise NotImplemented
 
 
 class Skeleton(Enemy):
-    def __init__(
-        self,
-        min_atk: int = 20,
-        max_atk: int = 30,
-        description: str = "Lvl 1. skeleton warrior equipped with rusty sword"
-    ):
-        super().__init__(min_atk, max_atk, description)
+    _BASE_STATS = {
+        "strength": 4,   # min_damage=20, max_damage=40
+        "vitality": 5,   # max_health=100
+        "agility": 3,    # dodge_chance=1.5%
+        "wisdom": 1,
+        "luck": 2,       # crit_chance=1%
+    }
 
-    def attack(self) -> int:
-        return random.randint(self.min_atk, self.max_atk)
+    def __init__(self, description: str = "Lvl 1. skeleton warrior equipped with rusty sword"):
+        super().__init__(description)
+        self.name = "Skeleton"

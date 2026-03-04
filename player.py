@@ -1,32 +1,24 @@
-import random
 from collections import defaultdict
 
+from combat_entity import CombatEntity
 from dungeon.item import BaseItem
 
+_DEFAULT_PLAYER_STATS = {
+    "strength": 20,   # min_damage=100, max_damage=200
+    "vitality": 100,  # max_health=2000
+    "agility": 5,     # dodge_chance=2.5%
+    "wisdom": 5,
+    "luck": 5,        # crit_chance=2.5%
+}
 
-class Player:
-    """Class representing a player """
 
-    def __init__(self):
-        # base parameters for player, stamina and mana are not used atm
-        self.health: int = 2000
-        self.min_base_damage: int = 100
-        self.max_base_damage: int = 200
-        # self.stamina: int = 500
-        # self.mana: int = 500
-        # those can be modified by equipment changes
-        self.min_damage = self.min_base_damage
-        self.max_damage = self.max_base_damage
+class Player(CombatEntity):
+    """Class representing a player."""
+
+    def __init__(self, base_stats: dict[str, int] | None = None):
+        super().__init__(base_stats if base_stats is not None else _DEFAULT_PLAYER_STATS)
         self.backpack: dict[BaseItem, int] = defaultdict(lambda: 0)
         self.items_equipped: list[BaseItem] = []
-        # statistics system is to be used later
-        self.statistics = {
-            "strength": 5,
-            "agility": 5,
-            "wisdom": 5,
-            "luck": 5,
-            "vitality": 5
-        }
 
     def grab_item(self, item: BaseItem) -> None:
         self.backpack[item] += 1
@@ -43,16 +35,26 @@ class Player:
             print("No such thing in your backpack.")
             return None
 
-    def get_backpack_content(self) -> dict:
-        return dict(self.backpack)
+    def get_backpack_content(self) -> None:
+        if not self.backpack:
+            print("Your backpack is empty.")
+            return
+
+        print("You are browsing your backpack and you see:")
+        for item, qty in self.backpack.items():
+            print(f"[{item.name}] x{qty}")
+            print(f"  {'description':<20}: {item.description.strip()}")
+            extra = {k: v for k, v in vars(item).items() if k not in ("name", "description")}
+            for prop, val in extra.items():
+                print(f"  {prop.replace('_', ' '):<20}: {val}")
 
     def equip_item(self, item: BaseItem) -> None:
         if not item.is_equipable:
             print("You can't equip this item")
-            pass
+            return
         if item not in self.backpack.keys():
             print("No such item in your backpack, therefore you can't equip it")
-            pass
+            return
         if self.backpack[item] > 1:
             self.backpack[item] -= 1
         else:
@@ -62,6 +64,3 @@ class Player:
 
     def get_equipment(self):
         return self.items_equipped
-
-    def attack(self) -> int:
-        return random.randint(self.min_damage, self.max_damage)

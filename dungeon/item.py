@@ -5,6 +5,8 @@ name: str
 description: str"""
 from abc import abstractmethod
 
+from combat_entity import _STATS
+
 
 class BaseItem:
     @abstractmethod
@@ -47,4 +49,4 @@ class EquipableSword(BaseItem):
         self.is_consumable = False
 
     def change_stats(self, entity: "CombatEntity"):
-        entity.stat_bonuses["strength"] += self.strength_bonus
+        entity.stat_bonuses[_STATS.strength] += self.strength_bonus

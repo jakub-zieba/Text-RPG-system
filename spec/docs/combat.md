@@ -87,7 +87,7 @@ Defined in [dungeon/enemy.py](../../dungeon/enemy.py). Each enemy class encapsul
 Equipment items extend `BaseItem` and implement `change_stats(entity)`. When equipped, `change_stats` is called immediately and writes to `entity.stat_bonuses`. Because derived stats recompute from the updated bonuses, all effects are applied instantly and consistently for both players and enemies.
 
 ### Example — Short Straight Sword
-Grants `+30 strength` via `stat_bonuses["strength"]`.
+Grants `+30 strength` via `stat_bonuses[_STATS.strength]`.
 
 Effect on default player: strength rises from 20 → 50, giving 250–500 damage.
 

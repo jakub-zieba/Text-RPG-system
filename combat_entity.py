@@ -1,6 +1,13 @@
 import random
+from enum import Enum
 
-_STATS = ("strength", "vitality", "agility", "wisdom", "luck")
+
+class _STATS(Enum):
+    strength = 1
+    vitality = 2
+    agility = 3
+    wisdom = 4
+    luck = 5
 
 
 class CombatEntity:
@@ -17,16 +24,16 @@ class CombatEntity:
     base_stats before any derived property is computed.
     """
 
-    def __init__(self, base_stats: dict[str, int]) -> None:
-        self.base_stats: dict[str, int] = {s: base_stats.get(s, 1) for s in _STATS}
-        self.stat_bonuses: dict[str, int] = {s: 0 for s in _STATS}
+    def __init__(self, base_stats: dict[_STATS, int]) -> None:
+        self.base_stats: dict[_STATS, int] = {s: base_stats.get(s, 1) for s in _STATS}
+        self.stat_bonuses: dict[_STATS, int] = {s: 0 for s in _STATS}
         self.current_health: int = self.max_health
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _stat(self, name: str) -> int:
+    def _stat(self, name: _STATS) -> int:
         return self.base_stats[name] + self.stat_bonuses[name]
 
     # ------------------------------------------------------------------
@@ -35,25 +42,25 @@ class CombatEntity:
 
     @property
     def max_health(self) -> int:
-        return self._stat("vitality") * 20
+        return self._stat(_STATS.vitality) * 20
 
     @property
     def min_damage(self) -> int:
-        return self._stat("strength") * 5
+        return self._stat(_STATS.strength) * 5
 
     @property
     def max_damage(self) -> int:
-        return self._stat("strength") * 10
+        return self._stat(_STATS.strength) * 10
 
     @property
     def crit_chance(self) -> float:
         """Crit chance as a percentage (luck * 0.5)."""
-        return self._stat("luck") * 0.5
+        return self._stat(_STATS.luck) * 0.5
 
     @property
     def dodge_chance(self) -> float:
         """Dodge chance as a percentage (agility * 0.5)."""
-        return self._stat("agility") * 0.5
+        return self._stat(_STATS.agility) * 0.5
 
     # ------------------------------------------------------------------
     # Combat actions

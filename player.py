@@ -1,21 +1,21 @@
 from collections import defaultdict
 
-from combat_entity import CombatEntity
+from combat_entity import CombatEntity, _STATS
 from dungeon.item import BaseItem
 
 _DEFAULT_PLAYER_STATS = {
-    "strength": 20,   # min_damage=100, max_damage=200
-    "vitality": 100,  # max_health=2000
-    "agility": 5,     # dodge_chance=2.5%
-    "wisdom": 5,
-    "luck": 5,        # crit_chance=2.5%
+    _STATS.strength: 20,   # min_damage=100, max_damage=200
+    _STATS.vitality: 100,  # max_health=2000
+    _STATS.agility: 5,     # dodge_chance=2.5%
+    _STATS.wisdom: 5,
+    _STATS.luck: 5,        # crit_chance=2.5%
 }
 
 
 class Player(CombatEntity):
     """Class representing a player."""
 
-    def __init__(self, base_stats: dict[str, int] | None = None):
+    def __init__(self, base_stats: dict[_STATS, int] | None = None):
         super().__init__(base_stats if base_stats is not None else _DEFAULT_PLAYER_STATS)
         self.backpack: dict[BaseItem, int] = defaultdict(lambda: 0)
         self.items_equipped: list[BaseItem] = []
